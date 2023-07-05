@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API - Earthquake</title>
+
+    <style>
+
+    .main-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        display: flex;
+        align-items: center;
+    }
+
+    .container h2 {
+        margin: 0 20px 0 0;
+    }
+
+    li{
+        list-style: none;
+    }
+
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <h1>Earthquakes</h1>
+        <div class="info">
+            <ul class="quakes"></ul>
+        </div>
+    </div>
+    
+<script>
+    const ul = document.querySelector('.quakes');
+
+    fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson')
+    .then((res) => res.json())
+    .then((obj) => {
+        const quakes = obj.features;
+        for (let i = 0; i < quakes.length; i++){
+            output(quakes[i]);
+        }
+    });
+
+    function output(item){
+        const mag = item.properties.mag.toFixed(2);
+        const li = `<li>
+            <div class = "container">
+            <h2>Magnitude ${mag}</h2>
+            <p>${item.properties.place}</p>
+            </div>
+            </li>`;
+            ul.insertAdjacentHTML('beforeend', li);
+    }
+
+</script>   
+</body>
+</html>
